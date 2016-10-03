@@ -49,8 +49,8 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef F
 #define F(string_literal) ((const PROGMEM char *)(string_literal))
 #undef PSTR
-#define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
-#include "HalfStepper.ino"
+#define PSTR(string_literal) ((const PROGMEM char *)(string_literal)))
+#include <..\..\..\HalfStepper.ino>
 #include <..\..\HalfStepper\HalfStepper.cpp>
 #include <..\..\HalfStepper\HalfStepper.h>
 #endif
