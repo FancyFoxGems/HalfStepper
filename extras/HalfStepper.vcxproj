@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -53,15 +53,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\..\HalfStepper.ino" />
+    <None Include="..\examples\BasicTest\BasicTest.ino" />
     <None Include="...\keywords.txt" />
     <None Include="...\library.properties" />
     <None Include="...\LICENSE" />
     <None Include="...\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.extras.vsarduino.h" />
-    <ClInclude Include="..\HalfStepper.h" />
     <ClInclude Include="__vm\.HalfStepper.vsarduino.h" />
+    <ClInclude Include="..\HalfStepper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\HalfStepper.cpp" />
