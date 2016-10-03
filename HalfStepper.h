@@ -10,7 +10,7 @@
 #ifndef HALFSTEPPER_H
 #define HALFSTEPPER_H "FTW"
 
-#include "Stepper.h"
+#include <Stepper\Stepper.h>
 
 class HalfStepper
 {
@@ -24,7 +24,7 @@ class HalfStepper
 
 	private:
 
-		boolean _UseHalfSteps = true
+		bool _UseHalfSteps = true;
 };
 
 #endif
