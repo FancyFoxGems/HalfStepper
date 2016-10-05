@@ -1,6 +1,7 @@
 #######################################
-# Syntax Coloring Map For Test
+# Syntax Coloring Map For HalfStepper
 #######################################
+
 
 #######################################
 # Datatypes (KEYWORD1)
@@ -8,15 +9,41 @@
 
 HalfStepper	KEYWORD1
 
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+
+~HalfStepper KEYWORD2
+
+setSpeed KEYWORD2
+step KEYWORD2
+version KEYWORD2
+
+SetDirection KEYWORD2
+GetDirection KEYWORD2
+SetSpeedRPMs KEYWORD2
+GetSpeedRPMs KEYWORD2
+SetSteppingMode KEYWORD2
+GetSteppingMode KEYWORD2
+SetPhasingMode KEYWORD2
+GetPhasingMode KEYWORD2
+SetSequenceType KEYWORD2
+GetSequenceType KEYWORD2
+
+StepForward KEYWORD2
+StepBackward KEYWORD2
+
 
 ######################################
 # Instances (KEYWORD2)
 #######################################
 
 
+
+
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+

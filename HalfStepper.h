@@ -83,12 +83,12 @@ class HalfStepper : public Stepper
 		void SetPhasingMode(PhasingMode);
 		PhasingMode GetPhasingMode();
 		void SetSequenceType(SequenceType);
-		SequenceType GetDriverType();
+		SequenceType GetSequenceType();
 
 		// Primary user methods
 		void StepForward(word);
 		void StepBackward(word);
-		virtual void Step(int);
+
 
 	protected:
 
@@ -143,7 +143,7 @@ class HalfStepper : public Stepper
 
 		// Speed & direction
 		Direction _Direction = Direction::FORWARD;
-		word _SpeedRPM = 0;
+		word _SpeedRPMs = 0;
 		dword _DelayMS = 0;
 
 		// State tracking

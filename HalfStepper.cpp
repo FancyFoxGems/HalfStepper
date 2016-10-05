@@ -40,15 +40,15 @@ HalfStepper::~HalfStepper()
 }
 
 
-void HalfStepper::setSpeed(long rpm)
+void HalfStepper::setSpeed(long rpms)
 {
-	if (rpm < 0)
+	if (rpms < 0)
 		_Direction = Direction::REVERSE;
 
-	_SpeedRPM = abs(rpm);
-	_DelayMS = 60L * 1000L / _NumSteps / _SpeedRPM;
+	_SpeedRPMs = abs(rpms);
+	_DelayMS = 60L * 1000L / _NumSteps / _SpeedRPMs;
 
-	_Stepper->setSpeed(_SpeedRPM);
+	_Stepper->setSpeed(_SpeedRPMs);
 }
 
 int HalfStepper::version()
@@ -73,7 +73,7 @@ PhasingMode HalfStepper::GetPhasingMode() { return _PhasingMode; }
 
 void HalfStepper::SetSequenceType(SequenceType sequenceType) { _SequenceType = sequenceType; }
 
-SequenceType HalfStepper::GetDriverType() { return _SequenceType; }
+SequenceType HalfStepper::GetSequenceType() { return _SequenceType; }
 
 
 void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
