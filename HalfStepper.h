@@ -24,18 +24,6 @@ typedef uint32_t dword;
 
 namespace HalfStepperOptions
 {
-	enum PinCount : bool
-	{
-		TWO = false,
-		FOUR = true
-	};
-
-	enum Direction : bool
-	{
-		FORWARD = false,
-		REVERSE = true
-	};
-
 	enum SteppingMode : bool
 	{
 		FULL = false,
@@ -52,6 +40,12 @@ namespace HalfStepperOptions
 	{
 		SEQUENTIAL = false,
 		ALTERNATING = true
+	};
+
+	enum Direction : bool
+	{
+		FORWARD = false,
+		REVERSE = true
 	};
 }
 
