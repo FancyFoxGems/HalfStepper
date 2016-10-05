@@ -1,6 +1,6 @@
-#include "Stepper.h"
+#include "HalfStepper.h"
 
-Stepper motor(200, 9, 11, 4, 5);
+HalfStepper motor(200, 9, 11, 4, 5);
 
 void setup() { }
 

@@ -12,6 +12,9 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode stepp
 	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps), 
 		_SteppingMode(steppingMode), _PhasingMode(PhasingMode::DUAL), _SequenceType(SequenceType::ALTERNATING)
 {
+	if (_SteppingMode = SteppingMode::HALF)
+		_NumSteps *= 2;
+
 	_Pins = new byte[_PinCount];	
 
 	_Pins[0] = pin1;
@@ -28,6 +31,9 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pi
 	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps), 
 		_SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
 {
+	if (_SteppingMode = SteppingMode::HALF)
+		_NumSteps *= 2;
+
 	_Pins = new byte[_PinCount];
 
 	_Pins[0] = pin1;

@@ -117,7 +117,8 @@ class HalfStepper : public Stepper
 
 		void SetDirection(Direction);
 		Direction GetDirection();
-		void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer aliasas
+
+		void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer aliasa
 
 		// (Hidden) overrides
 		void setSpeed(long);
