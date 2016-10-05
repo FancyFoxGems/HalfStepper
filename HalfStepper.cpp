@@ -8,36 +8,74 @@
 using namespace HalfStepperOptions;
 
 
-HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, 
-	SteppingMode steppingMode = SteppingMode::HALF, PhasingMode phasingMode = PhasingMode::DUAL, SequenceType sequenceType = SequenceType::ALTERNATING) 
-	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps), _SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
+HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode steppingMode) 
+	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps), 
+		_SteppingMode(steppingMode), _PhasingMode(PhasingMode::DUAL), _SequenceType(SequenceType::ALTERNATING)
 {
 	_Pins = new byte[_PinCount];	
+
 	_Pins[0] = pin1;
 	_Pins[1] = pin2;
 
 
 	_Stepper = new Stepper(numSteps, pin1, pin2);
+
+	this->UpdateSteps();
 }
 
 HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pin4, 
-	SteppingMode steppingMode = SteppingMode::HALF, PhasingMode phasingMode = PhasingMode::DUAL, SequenceType sequenceType = SequenceType::ALTERNATING) 
-	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps), _SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
+	SteppingMode steppingMode, PhasingMode phasingMode, SequenceType sequenceType) 
+	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps), 
+		_SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
 {
 	_Pins = new byte[_PinCount];
+
 	_Pins[0] = pin1;
 	_Pins[1] = pin2;
 	_Pins[2] = pin3;
 	_Pins[3] = pin4;
 
 	_Stepper = new Stepper(numSteps, pin1, pin2, pin3, pin4);
+	this->UpdateSteps();
 }
 
 HalfStepper::~HalfStepper()
 {
+	delete[] _Steps;
 	delete _Stepper;
 	delete[] _Pins;
 }
+
+
+void HalfStepper::SetSteppingMode(SteppingMode steppingMode)
+{
+	_SteppingMode = steppingMode;
+	this->UpdateSteps();
+}
+
+SteppingMode HalfStepper::GetSteppingMode() { return _SteppingMode; }
+
+void HalfStepper::SetPhasingMode(PhasingMode phasingMode)
+{
+	_PhasingMode = phasingMode;
+	this->UpdateSteps();
+}
+
+PhasingMode HalfStepper::GetPhasingMode() { return _PhasingMode; }
+
+void HalfStepper::SetSequenceType(SequenceType sequenceType)
+{
+	_SequenceType = sequenceType;
+	this->UpdateSteps();
+}
+
+SequenceType HalfStepper::GetSequenceType() { return _SequenceType; }
+
+void HalfStepper::SetDirection(Direction direction) { _Direction = direction; }
+
+Direction HalfStepper::GetDirection() { return _Direction; }
+
+word HalfStepper::GetSpeedRPMs() { return _Direction; }
 
 
 void HalfStepper::setSpeed(long rpms)
@@ -55,30 +93,6 @@ int HalfStepper::version()
 {
 	return 69;	// heh...
 }
-
-
-void HalfStepper::SetDirection(Direction direction) { _Direction = direction;  }
-
-Direction HalfStepper::GetDirection() { return _Direction; }
-
-word HalfStepper::GetSpeedRPMs() { return _Direction; }
-
-void HalfStepper::SetSteppingMode(SteppingMode steppingMode) { _SteppingMode = steppingMode; }
-
-SteppingMode HalfStepper::GetSteppingMode() { return _SteppingMode; }
-
-void HalfStepper::SetPhasingMode(PhasingMode phasingMode) { _PhasingMode = phasingMode; }
-
-PhasingMode HalfStepper::GetPhasingMode() { return _PhasingMode; }
-
-void HalfStepper::SetSequenceType(SequenceType sequenceType) { _SequenceType = sequenceType; }
-
-SequenceType HalfStepper::GetSequenceType() { return _SequenceType; }
-
-
-void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
-
-void HalfStepper::StepBackward(word numSteps) { this->step(numSteps); }
 
 void HalfStepper::step(int numSteps)
 {
@@ -113,61 +127,50 @@ void HalfStepper::step(int numSteps)
 				_CurrStepNum--;
 			}
 
-			this->DoStep(_CurrStepNum % 4);
+			this->DoStep(_CurrStepNum % (_PinCount * 2));
 		}
 	}
 }
 
-void HalfStepper::DoStep(byte stepIdx)
+
+void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
+
+void HalfStepper::StepBackward(word numSteps) { this->step(-1 * numSteps); }
+
+
+void HalfStepper::UpdateSteps()
 {
-	/*
-	if (	pin_count == 2)
+
+	if (_PinCount == 2)
 	{
-	switch (stepIndex) {
-	case 0:
-	digitalWrite(motor_pin_1, LOW);
-	digitalWrite(motor_pin_2, HIGH);
-	break;
-	case 1:
-	digitalWrite(motor_pin_1, HIGH);
-	digitalWrite(motor_pin_2, HIGH);
-	break;
-	case 2:
-	digitalWrite(motor_pin_1, HIGH);
-	digitalWrite(motor_pin_2, LOW);
-	break;
-	case 3:
-	digitalWrite(motor_pin_1, LOW);
-	digitalWrite(motor_pin_2, LOW);
-	break;
+		_Steps = new byte[4];
+
+		for (int i = 0; i < 4; i++)
+			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_TWO_PIN[BOOL_TO_INDEX(_SteppingMode)][i]);
 	}
 	else
 	{
-	switch (stepIndex) {
-	case 0:    // 1010
-	digitalWrite(motor_pin_1, HIGH);
-	digitalWrite(motor_pin_2, LOW);
-	digitalWrite(motor_pin_3, HIGH);
-	digitalWrite(motor_pin_4, LOW);
-	break;
-	case 1:    // 0110
-	digitalWrite(motor_pin_1, LOW);
-	digitalWrite(motor_pin_2, HIGH);
-	digitalWrite(motor_pin_3, HIGH);
-	digitalWrite(motor_pin_4, LOW);
-	break;
-	case 2:    //0101
-	digitalWrite(motor_pin_1, LOW);
-	digitalWrite(motor_pin_2, HIGH);
-	digitalWrite(motor_pin_3, LOW);
-	digitalWrite(motor_pin_4, HIGH);
-	break;
-	case 3:    //1001
-	digitalWrite(motor_pin_1, HIGH);
-	digitalWrite(motor_pin_2, LOW);
-	digitalWrite(motor_pin_3, LOW);
-	digitalWrite(motor_pin_4, HIGH);
-	break;
+		_Steps = new byte[8];
+
+		for (int i = 0; i < 4; i++)
+			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_FOUR_PIN[BOOL_TO_INDEX(_SteppingMode)][BOOL_TO_INDEX(_PhasingMode)][BOOL_TO_INDEX(_SequenceType)][i]);
 	}
-	}*/
+
+
+}
+
+void HalfStepper::DoStep(byte stepIdx)
+{
+	if (_PinCount == 4)
+	{
+		digitalWrite(_Pins[0], ((_Steps[stepIdx] & B1000) >> 0x3) ? HIGH : LOW);
+		digitalWrite(_Pins[1], ((_Steps[stepIdx] & B0000) >> 0x2) ? HIGH : LOW);
+		digitalWrite(_Pins[2], ((_Steps[stepIdx] & B0010) >> 0x1) ? HIGH : LOW);
+		digitalWrite(_Pins[3], (_Steps[stepIdx] & B0001) ? HIGH : LOW);
+	}
+	else
+	{
+		digitalWrite(_Pins[0], ((_Steps[stepIdx] & B0010) >> 0x1) ? HIGH : LOW);
+		digitalWrite(_Pins[1], (_Steps[stepIdx] & B0001) ? HIGH : LOW);
+	}
 }

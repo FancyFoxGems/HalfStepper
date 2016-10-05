@@ -10,8 +10,12 @@
 #ifndef HALFSTEPPER_H
 #define HALFSTEPPER_H "FTW"
 
+
+#include <avr/pgmspace.h>
+
 #include "Arduino.h"
-#include "Stepper\Stepper.h"
+
+#include "Stepper.h"
 
 
 #define BOOL_TO_INDEX(bool_expr)	((bool_expr) ? 1 : 0)
@@ -24,6 +28,8 @@ typedef uint32_t dword;
 
 namespace HalfStepperOptions
 {
+	// Enums
+
 	enum SteppingMode : bool
 	{
 		FULL = false,
@@ -47,6 +53,43 @@ namespace HalfStepperOptions
 		FORWARD = false,
 		REVERSE = true
 	};
+
+
+	// Pin state sequences for steps
+
+	// Two pin step motor sequences
+	// NOTE: Only two variations exist; dual phasing is the same as half-stepping.
+	PROGMEM static const byte _STEP_SEQUENCES_TWO_PIN[2][4] =
+	{
+		{ B00000001, B00000011, B00000010, B00000000 },
+		{ B00000001, B00000010, B00000001, B00000010 }
+	};
+
+	// Four pin step motor sequences
+	// Structured by Stepping mode --> Phasing mode --> Sequence type.
+	PROGMEM static const byte _STEP_SEQUENCES_FOUR_PIN[2][2][2][8] =
+	{
+		{
+			{
+				{ B00001000, B00000010, B00000100, B00000001, B00001000, B00000010, B00000100, B00000001 },
+				{ B00001000, B00000100, B00000010, B00000001, B00001000, B00000100, B00000010, B00000001 }
+			},
+			{
+				{ B00001100, B00000110, B00000110, B00000011, B00001100, B00000110, B00000110, B00000011 },
+				{ B00001010, B00000110, B00000101, B00001001, B00001010, B00000110, B00000101, B00001001 }
+			}
+		},
+		{
+			{
+				{ B00001000, B00001100, B00000100, B00000110, B00000010, B00000011, B00000001, B00001001 },
+				{ B00001000, B00001010, B00000010, B00000110, B00000100, B00000101, B00000001, B00001001 }
+			},
+			{
+				{ B00001000, B00001100, B00000100, B00000110, B00000010, B00000011, B00000001, B00001001 },
+				{ B00001000, B00001010, B00000010, B00000110, B00000100, B00000101, B00000001, B00001001 }
+			}
+		}
+	};
 }
 
 using namespace HalfStepperOptions;
@@ -57,20 +100,13 @@ class HalfStepper : public Stepper
 {
 	public:
 
-		HalfStepper(word, byte, byte, SteppingMode, PhasingMode, SequenceType);
-		HalfStepper(word, byte, byte, byte, byte, SteppingMode, PhasingMode, SequenceType);
+		HalfStepper(word, byte, byte, SteppingMode = SteppingMode::HALF);
+		HalfStepper(word, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF, 
+			PhasingMode = PhasingMode::DUAL, SequenceType = SequenceType::ALTERNATING);
 
 		virtual ~HalfStepper();
 
-		// (Hidden) overrides
-		void setSpeed(long);
-		void step(int);
-		int version(void);
-
 		// Accessors & mutators
-		void SetDirection(Direction);
-		Direction GetDirection();
-		void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 		word GetSpeedRPMs();
 		void SetSteppingMode(SteppingMode);
 		SteppingMode GetSteppingMode();
@@ -79,6 +115,15 @@ class HalfStepper : public Stepper
 		void SetSequenceType(SequenceType);
 		SequenceType GetSequenceType();
 
+		void SetDirection(Direction);
+		Direction GetDirection();
+		void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer aliasas
+
+		// (Hidden) overrides
+		void setSpeed(long);
+		int version(void);
+		void step(int);
+
 		// Primary user methods
 		void StepForward(word);
 		void StepBackward(word);
@@ -86,41 +131,8 @@ class HalfStepper : public Stepper
 
 	protected:
 
-		// Pin state sequences for steps
-
-		// Two pin step motor sequences
-		// NOTE: Only two variations exist; dual phasing is the same as half-stepping.
-		const byte _STEP_SEQUENCES_TWO_PIN[2][4] = 
-		{
-			{ B00000001, B00000011, B00000010, B00000000 },
-			{ B00000001, B00000010, B00000001, B00000010 }
-		};
-
-		// Four pin step motor sequences
-		// Structured by Stepping mode --> Phasing mode --> Sequence type.
-		const byte _STEP_SEQUENCES_FOUR_PIN[2][2][2][8] =
-		{
-			{
-				{
-					{ B00001000, B00000010, B00000100, B00000001, B00001000, B00000010, B00000100, B00000001 },
-					{ B00001000, B00000100, B00000010, B00000001, B00001000, B00000100, B00000010, B00000001 }
-				},
-				{
-					{ B00001100, B00000110, B00000110, B00000011, B00001100, B00000110, B00000110, B00000011 },
-					{ B00001010, B00000110, B00000101, B00001001, B00001010, B00000110, B00000101, B00001001 }
-				}
-			},
-			{
-				{
-					{ B00001000, B00001100, B00000100, B00000110, B00000010, B00000011, B00000001, B00001001 },
-					{ B00001000, B00001010, B00000010, B00000110, B00000100, B00000101, B00000001, B00001001 }
-				},
-				{
-					{ B00001000, B00001100, B00000100, B00000110, B00000010, B00000011, B00000001, B00001001 },
-					{ B00001000, B00001010, B00000010, B00000110, B00000100, B00000101, B00000001, B00001001 }
-				}
-			}
-		};
+		// Memory-resident steps array
+		byte * _Steps = NULL;
 				
 		// Decorated Stepper object
 		Stepper * _Stepper = NULL;
@@ -143,6 +155,8 @@ class HalfStepper : public Stepper
 		// State tracking
 		byte _CurrStepNum = 0;
 		dword _LastStepMS = 0;
+
+		void UpdateSteps();
 
 		// Step execution method
 		virtual void DoStep(byte);
