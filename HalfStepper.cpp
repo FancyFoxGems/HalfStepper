@@ -36,6 +36,7 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pi
 	_Pins[3] = pin4;
 
 	_Stepper = new Stepper(numSteps, pin1, pin2, pin3, pin4);
+
 	this->UpdateSteps();
 }
 
@@ -140,7 +141,6 @@ void HalfStepper::StepBackward(word numSteps) { this->step(-1 * numSteps); }
 
 void HalfStepper::UpdateSteps()
 {
-
 	if (_PinCount == 2)
 	{
 		_Steps = new byte[4];
@@ -155,22 +155,20 @@ void HalfStepper::UpdateSteps()
 		for (int i = 0; i < 4; i++)
 			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_FOUR_PIN[BOOL_TO_INDEX(_SteppingMode)][BOOL_TO_INDEX(_PhasingMode)][BOOL_TO_INDEX(_SequenceType)][i]);
 	}
-
-
 }
 
 void HalfStepper::DoStep(byte stepIdx)
 {
 	if (_PinCount == 4)
 	{
-		digitalWrite(_Pins[0], ((_Steps[stepIdx] & B1000) >> 0x3) ? HIGH : LOW);
-		digitalWrite(_Pins[1], ((_Steps[stepIdx] & B0000) >> 0x2) ? HIGH : LOW);
-		digitalWrite(_Pins[2], ((_Steps[stepIdx] & B0010) >> 0x1) ? HIGH : LOW);
-		digitalWrite(_Pins[3], (_Steps[stepIdx] & B0001) ? HIGH : LOW);
+		digitalWrite(_Pins[0], _Steps[stepIdx] & B1000 ? HIGH : LOW);
+		digitalWrite(_Pins[1], _Steps[stepIdx] & B0000 ? HIGH : LOW);
+		digitalWrite(_Pins[2], _Steps[stepIdx] & B0010 ? HIGH : LOW);
+		digitalWrite(_Pins[3], _Steps[stepIdx] & B0001 ? HIGH : LOW);
 	}
 	else
 	{
-		digitalWrite(_Pins[0], ((_Steps[stepIdx] & B0010) >> 0x1) ? HIGH : LOW);
-		digitalWrite(_Pins[1], (_Steps[stepIdx] & B0001) ? HIGH : LOW);
+		digitalWrite(_Pins[0], _Steps[stepIdx] & B0010 ? HIGH : LOW);
+		digitalWrite(_Pins[1], _Steps[stepIdx] & B0001 ? HIGH : LOW);
 	}
 }

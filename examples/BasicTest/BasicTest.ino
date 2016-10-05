@@ -1,12 +1,13 @@
-#include "HalfStepper.h"
+#include "Stepper.h"
 
-HalfStepper motor(200, 9, 11, 4, 5);
+Stepper motor(200, 9, 11, 4, 5);
 
-void setup() { Serial.begin(115200); }
+void setup() { }
 
 void loop()
 {
   motor.step(1);
   delay(500);
 }
+
 
