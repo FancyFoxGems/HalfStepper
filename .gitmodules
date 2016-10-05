@@ -1,3 +1,0 @@
-[submodule "Stepper"]
-	path = Stepper
-	url = git://github.com/arduino-libraries/Stepper/tree/1.1.2
