@@ -11,24 +11,40 @@
 #define HALFSTEPPER_H "FTW"
 
 
+/* INCLUDES */
+
+// AVR LIBS
 #include <avr/pgmspace.h>
 
+// ARDUINO CORE
 #include "Arduino.h"
 
+// ARDUINO LIBS
 #include "Stepper.h"
 
 
+/* DEFINES */
+
+// PROGRAM OPTIONS
+#define DEBUG_SERIAL	0
+
+#if !defined(DEBUG_SERIAL) || DEBUG_SERIAL == 0
+#undef DEBUG_SERIAL
+#endif
+
+// MACROS
 #define BOOL_TO_INDEX(bool_expr)	((bool_expr) ? 1 : 0)
 
-
+// TYPE DEFINITION ALIASES
 typedef uint8_t byte;
 typedef uint16_t word;
 typedef uint32_t dword;
 
 
+/* HalfStepperOptions NAMESPACE: ENUMS & STEP SEQUENCE STATES */
 namespace HalfStepperOptions
 {
-	// Enums
+	/* ENUMS */
 
 	enum SteppingMode : bool
 	{
@@ -55,7 +71,7 @@ namespace HalfStepperOptions
 	};
 
 
-	// Pin state sequences for steps
+	// PIN STATE SEQUENCES FOR STEPS
 
 	// Two pin step motor sequences
 	// NOTE: Only two variations exist; dual phasing is the same as half-stepping.
@@ -96,71 +112,79 @@ using namespace HalfStepperOptions;
 
 
 
+/* HalfStepper CLASS DECLARATION */
+
 class HalfStepper : public Stepper
 {
-	public:
+public:
 
-		HalfStepper(word, byte, byte, SteppingMode = SteppingMode::HALF);
-		HalfStepper(word, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF, 
-			PhasingMode = PhasingMode::DUAL, SequenceType = SequenceType::ALTERNATING);
+	// CONSTRUCTORS
+	HalfStepper(word, byte, byte, SteppingMode = SteppingMode::HALF);
+	HalfStepper(word, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF,
+		PhasingMode = PhasingMode::DUAL, SequenceType = SequenceType::ALTERNATING);
 
-		virtual ~HalfStepper();
+	// DESTRUCTOR
+	virtual ~HalfStepper();
 
-		// Accessors & mutators
-		word GetSpeedRPMs();
-		void SetSteppingMode(SteppingMode);
-		SteppingMode GetSteppingMode();
-		void SetPhasingMode(PhasingMode);
-		PhasingMode GetPhasingMode();
-		void SetSequenceType(SequenceType);
-		SequenceType GetSequenceType();
+	// ACCESSORS & MUTATORS
+	word GetSpeedRPMs();
+	void SetSteppingMode(SteppingMode);
+	SteppingMode GetSteppingMode();
+	void SetPhasingMode(PhasingMode);
+	PhasingMode GetPhasingMode();
+	void SetSequenceType(SequenceType);
+	SequenceType GetSequenceType();
 
-		void SetDirection(Direction);
-		Direction GetDirection();
+	void SetDirection(Direction);
+	Direction GetDirection();
 
-		void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer aliasa
+	void SetCurrStepNum(word);
+	word GetCurrStepNum();
 
-		// (Hidden) overrides
-		void setSpeed(long);
-		int version(void);
-		void step(int);
+	void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 
-		// Primary user methods
-		void StepForward(word);
-		void StepBackward(word);
+	// Stepper (HIDDEN) OVERRIDES
+	void setSpeed(long);
+	int version(void);
+	void step(int);
+
+	// PRIMARY USER METHODS
+	void StepForward(word);
+	void StepBackward(word);
 
 
-	protected:
+protected:
 
-		// Memory-resident steps array
-		byte * _Steps = NULL;
-				
-		// Decorated Stepper object
-		Stepper * _Stepper = NULL;
+	// MEMORY-RESIDENT STEPS ARRAY
+	byte * _Steps = NULL;
 
-		// Pins for motor control
-		byte _PinCount = 2;
-		byte * _Pins = NULL;
+	// DECORATED STEPPER OBJECT
+	Stepper * _Stepper = NULL;
 
-		// Motor properties / stepping options
-		word _NumSteps = 0;
-		SteppingMode _SteppingMode = SteppingMode::HALF;
-		PhasingMode _PhasingMode = PhasingMode::DUAL;
-		SequenceType _SequenceType = SequenceType::ALTERNATING;
+	// PINS FOR MOTOR CONTROL
+	byte _PinCount = 2;
+	byte * _Pins = NULL;
 
-		// Speed & direction
-		Direction _Direction = Direction::FORWARD;
-		word _SpeedRPMs = 0;
-		dword _DelayMS = 0;
+	// MOTOR PROPERTIES / STEPPING OPTIONS
+	word _NumSteps = 0;
+	SteppingMode _SteppingMode = SteppingMode::HALF;
+	PhasingMode _PhasingMode = PhasingMode::DUAL;
+	SequenceType _SequenceType = SequenceType::ALTERNATING;
 
-		// State tracking
-		byte _CurrStepNum = 0;
-		dword _LastStepMS = 0;
+	// SPEED & DIRECTION
+	Direction _Direction = Direction::FORWARD;
+	word _SpeedRPMs = 0;
+	dword _DelayMS = 0;
 
-		void UpdateSteps();
+	// STATE TRACKING
+	word _CurrStepNum = 0;
+	dword _LastStepMS = 0;
 
-		// Step execution method
-		virtual void DoStep(byte);
+	// STEP SEQUENCE RETRIEVAL METHOD
+	void UpdateSteps();
+
+	// STEP EXECUTION METHOD
+	virtual void DoStep(byte);
 };
 
 #endif

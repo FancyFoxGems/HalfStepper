@@ -1,12 +1,12 @@
 #include "HalfStepper.h"
 
-HalfStepper motor(200, 9, 11, 4, 5);
+HalfStepper motor(200, 7, 6, 5, 4);
 
 void setup() { }
 
 void loop()
 {
-  motor.step(1);
+  motor.step(10);
   delay(500);
 }
 

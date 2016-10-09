@@ -4,6 +4,7 @@
 ---
 
 HalfStepper decorates (wraps) the Stepper library to provide half-step states and has options for single/dual phasing as well as multiple coil sequencing options.
+<br/><br/>This library is able to drive motors directly or through drivers with motor control or H-bridge chips, such as the L293, L298, and L9110.
 
 ---
 
