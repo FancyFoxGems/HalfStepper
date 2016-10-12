@@ -26,7 +26,9 @@
 /* DEFINES */
 
 // PROGRAM OPTIONS
-#define DEBUG_SERIAL	0
+#ifndef DEBUG_SERIAL
+	#define DEBUG_SERIAL	0
+#endif
 
 #if !defined(DEBUG_SERIAL) || DEBUG_SERIAL == 0
 #undef DEBUG_SERIAL
@@ -155,6 +157,8 @@ public:
 
 protected:
 
+	static const dword _DELAY_MS_DEFAULT_SPEED = 5;
+
 	// MEMORY-RESIDENT STEPS ARRAY
 	byte * _Steps = NULL;
 
@@ -174,7 +178,7 @@ protected:
 	// SPEED & DIRECTION
 	Direction _Direction = Direction::FORWARD;
 	word _SpeedRPMs = 0;
-	dword _DelayMS = 0;
+	dword _DelayMS = _DELAY_MS_DEFAULT_SPEED;
 
 	// STATE TRACKING
 	word _CurrStepNum = 0;

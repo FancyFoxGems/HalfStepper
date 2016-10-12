@@ -13,7 +13,7 @@ using namespace HalfStepperOptions;
 // CONSTRUCTORS
 
 HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode steppingMode)
-	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps),
+	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps), 
 	_SteppingMode(steppingMode), _PhasingMode(PhasingMode::DUAL), _SequenceType(SequenceType::ALTERNATING)
 {
 	if (_SteppingMode = SteppingMode::HALF)
@@ -32,7 +32,7 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode stepp
 
 HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pin4,
 	SteppingMode steppingMode, PhasingMode phasingMode, SequenceType sequenceType)
-	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps),
+	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps), 
 	_SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
 {
 	if (_SteppingMode = SteppingMode::HALF)
@@ -130,24 +130,22 @@ void HalfStepper::step(int numSteps)
 
 	while (numSteps-- > 0)
 	{
-		if (millis() - _LastStepMS >= _DelayMS)
+		while (millis() - _LastStepMS < _DelayMS) delay(1);
+
+		_LastStepMS = millis();
+
+		if (_Direction == Direction::FORWARD)
 		{
-			_LastStepMS = millis();
-
-			if (_Direction == Direction::FORWARD)
-			{
-				if (++_CurrStepNum == numSteps)
-					_CurrStepNum = 0;
-			}
-			else
-			{
-				if (_CurrStepNum == 0)
-					_CurrStepNum = numSteps;
-				_CurrStepNum--;
-			}
-
-			this->DoStep(_CurrStepNum % (_PinCount * 2));
+			if (_CurrStepNum++ == _NumSteps)
+				_CurrStepNum = 0;
 		}
+		else
+		{
+			if (_CurrStepNum-- == 0)
+				_CurrStepNum = _NumSteps;
+		}
+
+		this->DoStep(_CurrStepNum % (_PinCount * 2));
 	}
 }
 
@@ -186,19 +184,27 @@ void HalfStepper::UpdateSteps()
 void HalfStepper::DoStep(byte stepIdx)
 {
 #ifdef DEBUG_SERIAL
+
+	Serial.print(_CurrStepNum);
+	Serial.print("/");
+	Serial.print(_NumSteps);
+	Serial.print(" | ");
+
 	Serial.print(stepIdx);
 	Serial.print(": ");
 	Serial.print(_Steps[stepIdx]);
-	Serial.print(" - 0: ");
 
+	Serial.print(" - 0: ");
 	Serial.print(_Steps[stepIdx] & B1000 ? HIGH : LOW);
-	Serial.print("  1:  ");
+	Serial.print(" 1: ");
 	Serial.print((_Steps[stepIdx] & B0100) ? HIGH : LOW);
-	Serial.print("  2: ");
+	Serial.print(" 2: ");
 	Serial.print((_Steps[stepIdx] & B0010) ? HIGH : LOW);
-	Serial.print(" 3:  ");
+	Serial.print(" 3: ");
 	Serial.print((_Steps[stepIdx] & B0001) ? HIGH : LOW);
+
 	Serial.println();
+
 #endif
 
 	if (_PinCount == 4)
