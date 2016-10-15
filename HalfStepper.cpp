@@ -67,7 +67,7 @@ void HalfStepper::SetSteppingMode(SteppingMode steppingMode)
 	this->UpdateSteps();
 }
 
-SteppingMode HalfStepper::GetSteppingMode() { return _SteppingMode; }
+SteppingMode HalfStepper::GetSteppingMode() const { return _SteppingMode; }
 
 void HalfStepper::SetPhasingMode(PhasingMode phasingMode)
 {
@@ -75,7 +75,7 @@ void HalfStepper::SetPhasingMode(PhasingMode phasingMode)
 	this->UpdateSteps();
 }
 
-PhasingMode HalfStepper::GetPhasingMode() { return _PhasingMode; }
+PhasingMode HalfStepper::GetPhasingMode() const { return _PhasingMode; }
 
 void HalfStepper::SetSequenceType(SequenceType sequenceType)
 {
@@ -83,17 +83,17 @@ void HalfStepper::SetSequenceType(SequenceType sequenceType)
 	this->UpdateSteps();
 }
 
-SequenceType HalfStepper::GetSequenceType() { return _SequenceType; }
+SequenceType HalfStepper::GetSequenceType() const { return _SequenceType; }
 
 void HalfStepper::SetDirection(Direction direction) { _Direction = direction; }
 
-Direction HalfStepper::GetDirection() { return _Direction; }
+Direction HalfStepper::GetDirection() const { return _Direction; }
 
 void HalfStepper::SetPosition(word position) { _Position = position; }
 
-word HalfStepper::GetPosition() { return _Position; }
+word HalfStepper::GetPosition() const { return _Position; }
 
-word HalfStepper::GetSpeedRPMs() { return _SpeedRPMs; }
+word HalfStepper::GetSpeedRPMs() const { return _SpeedRPMs; }
 
 
 // STEPPER (HIDDEN) OVERRIDES

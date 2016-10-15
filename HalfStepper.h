@@ -129,19 +129,19 @@ public:
 	virtual ~HalfStepper();
 
 	// ACCESSORS & MUTATORS
-	word GetSpeedRPMs();
+	word GetSpeedRPMs() const;
 	void SetSteppingMode(SteppingMode);
-	SteppingMode GetSteppingMode();
+	SteppingMode GetSteppingMode() const;
 	void SetPhasingMode(PhasingMode);
-	PhasingMode GetPhasingMode();
+	PhasingMode GetPhasingMode() const;
 	void SetSequenceType(SequenceType);
-	SequenceType GetSequenceType();
+	SequenceType GetSequenceType() const;
 
 	void SetDirection(Direction);
-	Direction GetDirection();
+	Direction GetDirection() const;
 
 	void SetPosition(word);
-	word GetPosition();
+	word GetPosition() const;
 
 	void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 
