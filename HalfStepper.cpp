@@ -12,12 +12,12 @@ using namespace HalfStepperOptions;
 
 // CONSTRUCTORS
 
-HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode steppingMode)
-	: Stepper(numSteps, pin1, pin2), _PinCount(2), _NumSteps(numSteps), 
+HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, SteppingMode steppingMode)
+	: Stepper(totalSteps, pin1, pin2), _PinCount(2), _TotalSteps(totalSteps),
 	_SteppingMode(steppingMode), _PhasingMode(PhasingMode::DUAL), _SequenceType(SequenceType::ALTERNATING)
 {
-	if (_SteppingMode = SteppingMode::HALF)
-		_NumSteps *= 2;
+	if (_SteppingMode == SteppingMode::HALF)
+		_TotalSteps *= 2;
 
 	_Pins = new byte[_PinCount];
 
@@ -25,18 +25,18 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, SteppingMode stepp
 	_Pins[1] = pin2;
 
 
-	_Stepper = new Stepper(numSteps, pin1, pin2);
+	_Stepper = new Stepper(totalSteps, pin1, pin2);
 
 	this->UpdateSteps();
 }
 
-HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pin4,
+HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, byte pin3, byte pin4,
 	SteppingMode steppingMode, PhasingMode phasingMode, SequenceType sequenceType)
-	: Stepper(numSteps, pin1, pin2, pin3, pin4), _PinCount(4), _NumSteps(numSteps), 
+	: Stepper(totalSteps, pin1, pin2, pin3, pin4), _PinCount(4), _TotalSteps(totalSteps),
 	_SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
 {
-	if (_SteppingMode = SteppingMode::HALF)
-		_NumSteps *= 2;
+	if (_SteppingMode == SteppingMode::HALF)
+		_TotalSteps *= 2;
 
 	_Pins = new byte[_PinCount];
 
@@ -45,7 +45,7 @@ HalfStepper::HalfStepper(word numSteps, byte pin1, byte pin2, byte pin3, byte pi
 	_Pins[2] = pin3;
 	_Pins[3] = pin4;
 
-	_Stepper = new Stepper(numSteps, pin1, pin2, pin3, pin4);
+	_Stepper = new Stepper(totalSteps, pin1, pin2, pin3, pin4);
 
 	this->UpdateSteps();
 }
@@ -89,9 +89,9 @@ void HalfStepper::SetDirection(Direction direction) { _Direction = direction; }
 
 Direction HalfStepper::GetDirection() { return _Direction; }
 
-void HalfStepper::SetCurrStepNum(word currStepNum) { _CurrStepNum = currStepNum; }
+void HalfStepper::SetPosition(word position) { _Position = position; }
 
-word HalfStepper::GetCurrStepNum() { return _CurrStepNum; }
+word HalfStepper::GetPosition() { return _Position; }
 
 word HalfStepper::GetSpeedRPMs() { return _SpeedRPMs; }
 
@@ -103,7 +103,7 @@ void HalfStepper::setSpeed(long rpms)
 		_Direction = Direction::REVERSE;
 
 	_SpeedRPMs = abs(rpms);
-	_DelayMS = 60L * 1000L / _NumSteps / _SpeedRPMs;
+	_DelayMS = 60L * 1000L / _TotalSteps / _SpeedRPMs;
 
 	_Stepper->setSpeed(_SpeedRPMs);
 }
@@ -136,16 +136,16 @@ void HalfStepper::step(int numSteps)
 
 		if (_Direction == Direction::FORWARD)
 		{
-			if (_CurrStepNum++ == _NumSteps)
-				_CurrStepNum = 0;
+			if (_Position++ == _TotalSteps)
+				_Position = 0;
 		}
 		else
 		{
-			if (_CurrStepNum-- == 0)
-				_CurrStepNum = _NumSteps;
+			if (_Position-- == 0)
+				_Position = _TotalSteps;
 		}
 
-		this->DoStep(_CurrStepNum % (_PinCount * 2));
+		this->DoStep(_Position % (_PinCount * 2));
 	}
 }
 
@@ -155,6 +155,19 @@ void HalfStepper::step(int numSteps)
 void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
 
 void HalfStepper::StepBackward(word numSteps) { this->step(-1 * numSteps); }
+
+void HalfStepper::StepTo(word position)
+{
+	short numSteps = position - _Position;
+
+	if (position >= _TotalSteps)
+		position = position % _TotalSteps;
+
+	if (abs(numSteps) > _TotalSteps / 2)
+		numSteps = _Position - position;
+
+	this->step(numSteps);
+}
 
 
 
@@ -185,9 +198,9 @@ void HalfStepper::DoStep(byte stepIdx)
 {
 #ifdef DEBUG_SERIAL
 
-	Serial.print(_CurrStepNum);
+	Serial.print(_Position);
 	Serial.print("/");
-	Serial.print(_NumSteps);
+	Serial.print(_TotalSteps);
 	Serial.print(" | ");
 
 	Serial.print(stepIdx);

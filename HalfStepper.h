@@ -140,8 +140,8 @@ public:
 	void SetDirection(Direction);
 	Direction GetDirection();
 
-	void SetCurrStepNum(word);
-	word GetCurrStepNum();
+	void SetPosition(word);
+	word GetPosition();
 
 	void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 
@@ -153,6 +153,7 @@ public:
 	// PRIMARY USER METHODS
 	void StepForward(word);
 	void StepBackward(word);
+	void StepTo(word);
 
 
 protected:
@@ -170,7 +171,7 @@ protected:
 	byte * _Pins = NULL;
 
 	// MOTOR PROPERTIES / STEPPING OPTIONS
-	word _NumSteps = 0;
+	word _TotalSteps = 0;
 	SteppingMode _SteppingMode = SteppingMode::HALF;
 	PhasingMode _PhasingMode = PhasingMode::DUAL;
 	SequenceType _SequenceType = SequenceType::ALTERNATING;
@@ -181,7 +182,7 @@ protected:
 	dword _DelayMS = _DELAY_MS_DEFAULT_SPEED;
 
 	// STATE TRACKING
-	word _CurrStepNum = 0;
+	word _Position = 0;
 	dword _LastStepMS = 0;
 
 	// STEP SEQUENCE RETRIEVAL METHOD
