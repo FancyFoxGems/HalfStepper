@@ -175,6 +175,9 @@ void HalfStepper::StepTo(word position)
 
 void HalfStepper::UpdateSteps()
 {
+	if (_Steps != NULL)
+		delete[] _Steps;
+
 	if (_PinCount == 2)
 	{
 		_Steps = new byte[4];
