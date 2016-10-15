@@ -1,11 +1,21 @@
-/**********************************************************************************
-* Name:		HalfStepper Library
+/************************************************************************************************
+* Name:		HalfStepper (Arduino Library)
 * Created:	10/2/2016
 * Author:	Tom Biuso <tjbtech@yahoo.com>
 *
+* This file is the root, primary source code file for the HalfStepper Arduino library.
 * Copyright © 2016 Thomas J. Biuso III  ALL RIGHTS RESERVED...WHATEVER THAT MEANS.
-* RELEASED UNDER THE LGPL v3.0 LICENSE; SEE <LICENSE> FILE WITHIN DISTRIBUTION ROOT.
-***********************************************************************************/
+* RELEASED UNDER THE LGPL v3.0 LICENSE; SEE <LICENSE> FILE WITHIN DISTRIBUTION ROOT FOR TERMS.
+*
+* HalfStepper is free software: you can redistribute it and/or modify it under the terms of the
+* GNU Lesser General Public License as published by the Free Software Foundation, either version
+* 3 of the License, or (at your option) any later version.
+*
+* HalfStepper is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+* See the included GNU Lesser General Public License text for more details.
+************************************************************************************************/
 
 #ifndef HALFSTEPPER_H
 #define HALFSTEPPER_H "FTW"
