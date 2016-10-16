@@ -4,6 +4,10 @@
 * RELEASED UNDER THE LGPL v3.0 LICENSE; SEE <LICENSE> FILE WITHIN DISTRIBUTION ROOT FOR TERMS. *
 ************************************************************************************************/
 
+
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+
+
 #include "HalfStepper.h"
 
 using namespace HalfStepperOptions;
