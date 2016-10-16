@@ -21,7 +21,7 @@
 #define HALFSTEPPER_H "FTW"
 
 
-/* INCLUDES */
+#pragma region INCLUDES
 
 // AVR LIBS
 #include <avr/pgmspace.h>
@@ -32,8 +32,11 @@
 // ARDUINO LIBS
 #include "Stepper.h"
 
+#pragma endregion INCLUDES
 
-/* DEFINES */
+
+
+#pragma region DEFINES
 
 // PROGRAM OPTIONS
 #ifndef DEBUG_SERIAL
@@ -47,16 +50,27 @@
 // MACROS
 #define BOOL_TO_INDEX(bool_expr)	((bool_expr) ? 1 : 0)
 
+#pragma endregion DEFINES
+
+
+
+#pragma region TYPEDEFS
+
 // TYPE DEFINITION ALIASES
 typedef uint8_t byte;
 typedef uint16_t word;
 typedef uint32_t dword;
 
+#pragma endregion TYPEDEFS
+
+
+
+#pragma region HalfStepperOptions
 
 /* HalfStepperOptions NAMESPACE: ENUMS & STEP SEQUENCE STATES */
 namespace HalfStepperOptions
 {
-	/* ENUMS */
+	// ENUMS
 
 	enum SteppingMode : bool
 	{
@@ -122,9 +136,10 @@ namespace HalfStepperOptions
 
 using namespace HalfStepperOptions;
 
+#pragma endregion HalfStepperOptions
 
 
-/* HalfStepper CLASS DECLARATION */
+#pragma region HalfStepper CLASS DECLARATION
 
 class HalfStepper : public Stepper
 {
@@ -201,5 +216,7 @@ protected:
 	// STEP EXECUTION METHOD
 	virtual void DoStep(byte);
 };
+
+#pragma endregion HalfStepper CLASS DECLARATION
 
 #endif

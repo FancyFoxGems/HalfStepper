@@ -11,6 +11,9 @@ using namespace HalfStepperOptions;
 
 /* HalfStepper DEFINITION */
 
+
+#pragma region CONSTRUCTORS/DESTRUCTOR
+
 // CONSTRUCTORS
 
 HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, SteppingMode steppingMode)
@@ -60,8 +63,12 @@ HalfStepper::~HalfStepper()
 	delete[] _Pins;
 }
 
+#pragma endregion CONSTRUCTORS/DESTRUCTOR
 
-// ACCESSORS & MUTATORS
+
+
+#pragma region ACCESSORS & MUTATORS
+
 void HalfStepper::SetSteppingMode(SteppingMode steppingMode)
 {
 	_SteppingMode = steppingMode;
@@ -96,8 +103,12 @@ word HalfStepper::GetPosition() const { return _Position; }
 
 word HalfStepper::GetSpeedRPMs() const { return _SpeedRPMs; }
 
+#pragma endregion ACCESSORS & MUTATORS
 
-// STEPPER (HIDDEN) OVERRIDES
+
+
+#pragma region STEPPER (HIDDEN) OVERRIDES
+
 void HalfStepper::setSpeed(long rpms)
 {
 	if (rpms < 0)
@@ -150,8 +161,10 @@ void HalfStepper::step(int numSteps)
 	}
 }
 
+#pragma endregion STEPPER (HIDDEN) OVERRIDES
 
-// PRIMARY USER METHODS
+
+#pragma region PRIMARY USER METHODS
 
 void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
 
@@ -170,7 +183,10 @@ void HalfStepper::StepTo(word position)
 	this->step(numSteps);
 }
 
+#pragma end region PRIMARY USER METHODS
 
+
+#pragma region PROTECTED METHODS
 
 // STEP SEQUENCE RETRIEVAL METHOD
 
@@ -237,3 +253,5 @@ void HalfStepper::DoStep(byte stepIdx)
 		digitalWrite(_Pins[1], _Steps[stepIdx] & B0001 ? HIGH : LOW);
 	}
 }
+
+#pragma endregion PROTECTED METHODS
