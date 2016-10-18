@@ -17,8 +17,8 @@
 * See the included GNU Lesser General Public License text for more details.
 ************************************************************************************************/
 
-#ifndef HALFSTEPPER_H
-#define HALFSTEPPER_H "FTW"
+#ifndef HALFSTEPPER_
+#define HALFSTEPPER_ "FTW"
 
 
 #pragma region INCLUDES
