@@ -6,7 +6,7 @@
 
 
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
-
+#pragma GCC diagnostic ignored "-Wsign-compare"
 
 #include "HalfStepper.h"
 
