@@ -204,14 +204,17 @@ void HalfStepper::UpdateSteps()
 		_Steps = new byte[4];
 
 		for (int i = 0; i < 4; i++)
-			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_TWO_PIN[BOOL_TO_INDEX(_SteppingMode)][i]);
+			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_TWO_PIN[BOOL_TO_INDEX((bool)_SteppingMode)][i]);
 	}
 	else
 	{
 		_Steps = new byte[8];
 
 		for (int i = 0; i < 8; i++)
-			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_FOUR_PIN[BOOL_TO_INDEX(_SteppingMode)][BOOL_TO_INDEX(_PhasingMode)][BOOL_TO_INDEX(_SequenceType)][i]);
+		{
+			_Steps[i] = pgm_read_byte_near(&_STEP_SEQUENCES_FOUR_PIN[BOOL_TO_INDEX((bool)_SteppingMode)]
+				[BOOL_TO_INDEX((bool)_PhasingMode)][BOOL_TO_INDEX((bool)_SequenceType)][i]);
+		}
 	}
 }
 

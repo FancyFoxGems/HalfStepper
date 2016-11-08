@@ -72,25 +72,25 @@ namespace HalfStepperOptions
 {
 	// ENUMS
 
-	enum SteppingMode : bool
+	enum class SteppingMode : bool
 	{
 		FULL = false,
 		HALF = true
 	};
 
-	enum PhasingMode : bool
+	enum class PhasingMode : bool
 	{
 		SINGLE = false,
 		DUAL = true
 	};
 
-	enum SequenceType : bool
+	enum class SequenceType : bool
 	{
 		SEQUENTIAL = false,
 		ALTERNATING = true
 	};
 
-	enum Direction : bool
+	enum class Direction : bool
 	{
 		FORWARD = false,
 		REVERSE = true
