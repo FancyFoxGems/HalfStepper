@@ -17,8 +17,8 @@
 * See the included GNU Lesser General Public License text for more details.
 ************************************************************************************************/
 
-#ifndef HALFSTEPPER_
-#define HALFSTEPPER_ "FTW"
+#ifndef _HALFSTEPPER_
+#define _HALFSTEPPER_ "FTW"
 
 
 #pragma region INCLUDES
@@ -39,6 +39,7 @@
 #pragma region DEFINES
 
 // PROGRAM OPTIONS
+
 #ifndef DEBUG_SERIAL
 	#define DEBUG_SERIAL	0
 #endif
@@ -47,7 +48,9 @@
 #undef DEBUG_SERIAL
 #endif
 
+
 // MACROS
+
 #define BOOL_TO_INDEX(bool_expr)	((bool_expr) ? 1 : 0)
 
 #pragma endregion DEFINES
@@ -67,7 +70,8 @@ typedef uint32_t dword;
 
 #pragma region HalfStepperOptions
 
-/* HalfStepperOptions NAMESPACE: ENUMS & STEP SEQUENCE STATES */
+/* [HalfStepperOptions] NAMESPACE: ENUMS & STEP SEQUENCE STATES */
+
 namespace HalfStepperOptions
 {
 	// ENUMS
@@ -141,19 +145,26 @@ using namespace HalfStepperOptions;
 
 #pragma region HalfStepper CLASS DECLARATION
 
+/* [HalfStepper]: THE CLASS YOU WANT TO USE, SILLY. */
+
 class HalfStepper : public Stepper
 {
 public:
 
 	// CONSTRUCTORS
+
 	HalfStepper(word, byte, byte, SteppingMode = SteppingMode::HALF);
 	HalfStepper(word, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF,
 		PhasingMode = PhasingMode::DUAL, SequenceType = SequenceType::ALTERNATING);
 
+
 	// DESTRUCTOR
+
 	virtual ~HalfStepper();
 
+
 	// ACCESSORS & MUTATORS
+
 	word GetSpeedRPMs() const;
 	void SetSteppingMode(SteppingMode);
 	SteppingMode GetSteppingMode() const;
@@ -170,12 +181,16 @@ public:
 
 	void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 
-	// Stepper (HIDDEN) OVERRIDES
+
+	// [Stepper] (HIDDEN) OVERRIDES
+
 	void setSpeed(long);
 	int version(void);
 	void step(int);
 
+
 	// PRIMARY USER METHODS
+
 	void StepForward(word);
 	void StepBackward(word);
 	void StepTo(word);
@@ -183,7 +198,12 @@ public:
 
 protected:
 
+	// CLASS CONSTANTS
+
 	static const dword _DELAY_MS_DEFAULT_SPEED = 5;
+
+
+	// INSTANCE VARIABLES
 
 	// MEMORY-RESIDENT STEPS ARRAY
 	byte * _Steps = NULL;
@@ -209,6 +229,9 @@ protected:
 	// STATE TRACKING
 	word _Position = 0;
 	dword _LastStepMS = 0;
+
+
+	// HELPER METHODS
 
 	// STEP SEQUENCE RETRIEVAL METHOD
 	void UpdateSteps();
