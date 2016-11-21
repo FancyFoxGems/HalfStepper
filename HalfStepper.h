@@ -153,8 +153,8 @@ public:
 
 	// CONSTRUCTORS
 
-	HalfStepper(word, byte, byte, SteppingMode = SteppingMode::HALF);
-	HalfStepper(word, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF,
+	HalfStepper(dword, byte, byte, SteppingMode = SteppingMode::HALF);
+	HalfStepper(dword, byte, byte, byte, byte, SteppingMode = SteppingMode::HALF,
 		PhasingMode = PhasingMode::DUAL, SequenceType = SequenceType::ALTERNATING);
 
 
@@ -176,8 +176,8 @@ public:
 	void SetDirection(Direction);
 	Direction GetDirection() const;
 
-	void SetPosition(word);
-	word GetPosition() const;
+	void SetPosition(dword);
+	dword GetPosition() const;
 
 	void (HalfStepper::* const SetSpeedRPMs)(long) = &HalfStepper::setSpeed;	// Member function pointer alias
 
@@ -191,9 +191,10 @@ public:
 
 	// PRIMARY USER METHODS
 
-	void StepForward(word);
-	void StepBackward(word);
-	void StepTo(word);
+	void Step(long);
+	void StepForward(dword);
+	void StepBackward(dword);
+	void StepTo(dword);
 
 
 protected:
@@ -216,7 +217,7 @@ protected:
 	byte * _Pins = NULL;
 
 	// MOTOR PROPERTIES / STEPPING OPTIONS
-	word _TotalSteps = 0;
+	dword _TotalSteps = 0;
 	SteppingMode _SteppingMode = SteppingMode::HALF;
 	PhasingMode _PhasingMode = PhasingMode::DUAL;
 	SequenceType _SequenceType = SequenceType::ALTERNATING;
@@ -227,7 +228,7 @@ protected:
 	dword _DelayMS = _DELAY_MS_DEFAULT_SPEED;
 
 	// STATE TRACKING
-	word _Position = 0;
+	dword _Position = 0;
 	dword _LastStepMS = 0;
 
 

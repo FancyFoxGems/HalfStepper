@@ -20,7 +20,7 @@ using namespace HalfStepperOptions;
 
 // CONSTRUCTORS
 
-HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, SteppingMode steppingMode)
+HalfStepper::HalfStepper(dword totalSteps, byte pin1, byte pin2, SteppingMode steppingMode)
 	: Stepper(totalSteps, pin1, pin2), _PinCount(2), _TotalSteps(totalSteps),
 	_SteppingMode(steppingMode), _PhasingMode(PhasingMode::DUAL), _SequenceType(SequenceType::ALTERNATING)
 {
@@ -38,7 +38,7 @@ HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, SteppingMode ste
 	this->UpdateSteps();
 }
 
-HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, byte pin3, byte pin4,
+HalfStepper::HalfStepper(dword totalSteps, byte pin1, byte pin2, byte pin3, byte pin4,
 	SteppingMode steppingMode, PhasingMode phasingMode, SequenceType sequenceType)
 	: Stepper(totalSteps, pin1, pin2, pin3, pin4), _PinCount(4), _TotalSteps(totalSteps),
 	_SteppingMode(steppingMode), _PhasingMode(phasingMode), _SequenceType(sequenceType)
@@ -60,6 +60,7 @@ HalfStepper::HalfStepper(word totalSteps, byte pin1, byte pin2, byte pin3, byte 
 
 
 // DESTRUCTOR
+
 HalfStepper::~HalfStepper()
 {
 	delete[] _Steps;
@@ -101,9 +102,9 @@ void HalfStepper::SetDirection(Direction direction) { _Direction = direction; }
 
 Direction HalfStepper::GetDirection() const { return _Direction; }
 
-void HalfStepper::SetPosition(word position) { _Position = position; }
+void HalfStepper::SetPosition(dword position) { _Position = position; }
 
-word HalfStepper::GetPosition() const { return _Position; }
+dword HalfStepper::GetPosition() const { return _Position; }
 
 word HalfStepper::GetSpeedRPMs() const { return _SpeedRPMs; }
 
@@ -129,7 +130,14 @@ int HalfStepper::version()
 	return 69;	// heh...
 }
 
-void HalfStepper::step(int numSteps)
+void HalfStepper::step(int numSteps) { this->Step((long)numSteps); }
+
+#pragma endregion STEPPER (HIDDEN) OVERRIDES
+
+
+#pragma region PRIMARY USER METHODS
+
+void HalfStepper::Step(long numSteps)
 {
 	if (numSteps == 0)
 		return;
@@ -165,18 +173,13 @@ void HalfStepper::step(int numSteps)
 	}
 }
 
-#pragma endregion STEPPER (HIDDEN) OVERRIDES
+void HalfStepper::StepForward(dword numSteps) { this->Step((long)numSteps); }
 
+void HalfStepper::StepBackward(dword numSteps) { this->Step((long)-1 * numSteps); }
 
-#pragma region PRIMARY USER METHODS
-
-void HalfStepper::StepForward(word numSteps) { this->step(numSteps); }
-
-void HalfStepper::StepBackward(word numSteps) { this->step(-1 * numSteps); }
-
-void HalfStepper::StepTo(word position)
+void HalfStepper::StepTo(dword position)
 {
-	short numSteps = position - _Position;
+	long numSteps = position - _Position;
 
 	if (position >= _TotalSteps)
 		position = position % _TotalSteps;
