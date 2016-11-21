@@ -175,7 +175,7 @@ void HalfStepper::Step(long numSteps)
 
 void HalfStepper::StepForward(dword numSteps) { this->Step((long)numSteps); }
 
-void HalfStepper::StepBackward(dword numSteps) { this->Step((long)-1 * numSteps); }
+void HalfStepper::StepBackward(dword numSteps) { this->Step((long)-1 * (long)numSteps); }
 
 void HalfStepper::StepTo(dword position)
 {

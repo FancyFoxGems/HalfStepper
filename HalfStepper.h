@@ -191,9 +191,9 @@ public:
 
 	// PRIMARY USER METHODS
 
-	void Step(long);
-	void StepForward(dword);
-	void StepBackward(dword);
+	void Step(long = 1);
+	void StepForward(dword = 1);
+	void StepBackward(dword = 1);
 	void StepTo(dword);
 
 
