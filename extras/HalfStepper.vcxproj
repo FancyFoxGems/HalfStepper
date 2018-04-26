@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -35,6 +35,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <ForcedIncludeFiles>$(ProjectDir)HalfStepper\extras\__vm\.extras.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10608;ARDUINO_AVR_NANO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\Sketchbook;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\libraries;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\eightanaloginputs;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -42,28 +46,21 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <ForcedIncludeFiles>C:\RC\Sketchbook\HalfStepper\HalfStepper\extras\__vm\.HalfStepper.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10608;ARDUINO_AVR_NANO;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\RC\Sketchbook\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\eightanaloginputs;C:\RC\Sketchbook\HalfStepper;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\HalfStepper.ino" />
+    <None Include="HalfStepper.ino" />
     <None Include="..\examples\BasicTest\BasicTest.ino" />
-    <None Include="...\keywords.txt" />
-    <None Include="...\library.properties" />
-    <None Include="...\LICENSE" />
-    <None Include="...\README.md" />
+    <None Include="..\keywords.txt" />
+    <None Include="..\library.properties" />
+    <None Include="..\LICENSE" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.HalfStepper.vsarduino.h" />
+    <ClInclude Include="..\Stepper\src\Stepper.h" />
     <ClInclude Include="..\HalfStepper.h" />
+    <ClInclude Include="__vm\.extras.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Stepper\src\Stepper.cpp" />
     <ClCompile Include="..\HalfStepper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
