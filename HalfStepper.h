@@ -1,5 +1,5 @@
 /************************************************************************************************
-* Name:		HalfStepper (Arduino Library)
+* Name:	HalfStepper (Arduino Library)
 * Created:	10/2/2016
 * Author:	Tom Biuso <tjbtech@yahoo.com>
 *
