@@ -1,7 +1,7 @@
 /************************************************************************************************
-* Name:	HalfStepper (Arduino Library)
+* Name:		HalfStepper (Arduino Library)
 * Created:	10/2/2016
-* Author:	Tom Biuso <tjbtech@yahoo.com>
+* Author:		Tom Biuso <tjbtech@yahoo.com>
 *
 * This file is the root, primary source code file for the HalfStepper Arduino library.
 * Copyright © 2016 Thomas J. Biuso III  ALL RIGHTS RESERVED...WHATEVER THAT MEANS.
