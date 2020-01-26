@@ -7,8 +7,8 @@
 # Namespaces & Data Types (KEYWORD1)
 #######################################
 
-HalfStepperOptions		KEYWORD1
-HalfStepper				KEYWORD1
+HalfStepperOptions	KEYWORD1
+HalfStepper	KEYWORD1
 
 
 #######################################
@@ -16,31 +16,31 @@ HalfStepper				KEYWORD1
 #######################################
 
 # Enums
-SteppingMode			KEYWORD2
-PhasingMode				KEYWORD2
-SequenceType			KEYWORD2
-Direction				KEYWORD2
+SteppingMode	KEYWORD2
+PhasingMode	KEYWORD2
+SequenceType	KEYWORD2
+Direction	KEYWORD2
 
 # Stepper Overrides
-setSpeed				KEYWORD2
-step					KEYWORD2
-version					KEYWORD2
+setSpeed	KEYWORD2
+step	KEYWORD2
+version	KEYWORD2
 
 # Accessors & Mutators
-SetDirection			KEYWORD2
-GetDirection			KEYWORD2
-SetSpeedRPMs			KEYWORD2
-GetSpeedRPMs			KEYWORD2
-SetSteppingMode			KEYWORD2
-GetSteppingMode			KEYWORD2
-SetPhasingMode			KEYWORD2
-GetPhasingMode			KEYWORD2
-SetSequenceType			KEYWORD2
-GetSequenceType			KEYWORD2
+SetDirection	KEYWORD2
+GetDirection	KEYWORD2
+SetSpeedRPMs	KEYWORD2
+GetSpeedRPMs	KEYWORD2
+SetSteppingMode	KEYWORD2
+GetSteppingMode	KEYWORD2
+SetPhasingMode	KEYWORD2
+GetPhasingMode	KEYWORD2
+SetSequenceType	KEYWORD2
+GetSequenceType	KEYWORD2
 
 # Member Functions
-StepForward				KEYWORD2
-StepBackward			KEYWORD2
+StepForward	KEYWORD2
+StepBackward	KEYWORD2
 
 
 #######################################
@@ -48,17 +48,17 @@ StepBackward			KEYWORD2
 #######################################
 
 # SteppingMode
-FULL					LITERAL1
-HALF					LITERAL1
+FULL	LITERAL1
+HALF	LITERAL1
 
 # PhasingMode
-SINGLE					LITERAL1
-DUAL					LITERAL1
+SINGLE	LITERAL1
+DUAL	LITERAL1
 
 # SequenceType
-SEQUENTIAL				LITERAL1
-ALTERNATING				LITERAL1
+SEQUENTIAL	LITERAL1
+ALTERNATING	LITERAL1
 
 # Direction
-FORWARD					LITERAL1
-REVERSE					LITERAL1
+FORWARD	LITERAL1
+REVERSE	LITERAL1
